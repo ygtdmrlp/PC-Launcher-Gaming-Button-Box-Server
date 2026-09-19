@@ -1,0 +1,165 @@
+<UserControl x:Class="PCLauncher.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="24">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left">
+
+            <!-- Title -->
+            <StackPanel Margin="0,0,0,18">
+                <TextBlock Text="Uygulama &amp; Ağ Ayarları" FontSize="20" FontWeight="Bold" Foreground="#FFFFFF" />
+                <TextBlock Text="PC Launcher sunucusunu, sistem davranışını ve güvenliği yapılandırın." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0" />
+            </StackPanel>
+
+            <!-- Network & Server Settings Card -->
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,0,18">
+                <StackPanel>
+                    <TextBlock Text="🌐 Sunucu &amp; Ağ Yapılandırması" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,14" />
+
+                    <!-- Port -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="140" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="HTTP Port" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="Telefonun bağlanacağı TCP portu (Varsayılan: 5000)" FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <TextBox x:Name="PortTextBox" Grid.Column="1" Text="5000" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Separator Background="{StaticResource BorderSubtleBrush}" Margin="0,0,0,14" />
+
+                    <!-- Auto Start Server -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Server Otomatik Başlasın" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="PC Launcher açıldığında web sunucusunu otomatik olarak devreye alır." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <CheckBox x:Name="AutoStartServerCheckBox" Grid.Column="1" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Separator Background="{StaticResource BorderSubtleBrush}" Margin="0,0,0,14" />
+
+                    <!-- Windows Firewall -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Windows Firewall (Güvenlik Duvarı)" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock x:Name="FirewallStatusText" Text="Durum kontrol ediliyor..." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <Button x:Name="FirewallBtn" Grid.Column="1" Content="🛡️ Kural Ekle / Güncelle" Style="{StaticResource ModernButton}" Click="FirewallBtn_Click" VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Security & PIN Card -->
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,0,18">
+                <StackPanel>
+                    <TextBlock Text="🔒 Güvenlik &amp; PIN Koruması" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,14" />
+
+                    <!-- Enable PIN -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="PIN Kodu Doğrulaması İste" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="Ağdaki telefonların program başlatmadan önce PIN girmesini zorunlu kılar." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <CheckBox x:Name="UsePinCheckBox" Grid.Column="1" Checked="UsePinCheckBox_Changed" Unchecked="UsePinCheckBox_Changed" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <!-- PIN Input -->
+                    <Grid x:Name="PinInputRow" Visibility="Collapsed" Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="140" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="PIN Kodu (4-8 hane)" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="Telefon web arayüzünde girilecek şifre" FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <TextBox x:Name="PinCodeTextBox" Grid.Column="1" MaxLength="8" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <!-- Security Notice Box -->
+                    <Border Background="#121826" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel>
+                            <TextBlock Text="ℹ️ Yerel Ağ (LAN) Güvenlik Notu" FontSize="12" FontWeight="Bold" Foreground="#60A5FA" Margin="0,0,0,4" />
+                            <TextBlock Text="Bu sunucu yalnızca aynı Wi-Fi/LAN ağındaki cihazlardan erişilebilir. İnternete port açmaz. Yalnızca kayıt ettiğiniz programlar ID bazlı olarak çalıştırılabilir; serbest komut çalıştırma yetkisi bulunmaz." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Windows Integration Card -->
+            <Border Style="{StaticResource CardPanel}" Margin="0,0,0,18">
+                <StackPanel>
+                    <TextBlock Text="💻 Windows Entegrasyonu" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,14" />
+
+                    <!-- Minimize to Tray -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Sistem Tepsisine Küçült (Minimize to Tray)" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="Pencere kapatıldığında sunucunun kesintisiz çalışması için sistem tepsisine gizlenir." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <CheckBox x:Name="MinimizeToTrayCheckBox" Grid.Column="1" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Separator Background="{StaticResource BorderSubtleBrush}" Margin="0,0,0,14" />
+
+                    <!-- Run on Windows Startup -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Windows ile Başlat" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="Bilgisayar açıldığında PC Launcher arka planda otomatik olarak başlasın." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <CheckBox x:Name="StartWithWindowsCheckBox" Grid.Column="1" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Separator Background="{StaticResource BorderSubtleBrush}" Margin="0,0,0,14" />
+
+                    <!-- Open Data Folder -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Kayıt Dosyaları &amp; Loglar" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                            <TextBlock Text="apps.json, settings.json ve günlük log dosyalarının bulunduğu klasör." FontSize="11" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                        <Button Content="📂 Veri Klasörünü Aç" Style="{StaticResource ModernButton}" Click="OpenDataFolder_Click" Grid.Column="1" VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Save Action Button -->
+            <Border Padding="0,8,0,24">
+                <Button Content="💾 Ayarları Kaydet" Style="{StaticResource PrimaryButton}" Click="SaveSettings_Click" HorizontalAlignment="Right" Padding="20,12" FontSize="14" />
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

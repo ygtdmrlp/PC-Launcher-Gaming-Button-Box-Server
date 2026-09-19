@@ -1,0 +1,123 @@
+<UserControl x:Class="PCLauncher.App.Views.KeyActionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="900">
+    <Border Padding="24">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Top Bar: Title, Search, Filter & Add Button -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Oyun Tuşları (Button Box)" FontSize="20" FontWeight="Bold" Foreground="#FFFFFF" />
+                    <TextBlock x:Name="SummaryText" Text="Telefonda Stream Deck / Tuş Takımı olarak çalışacak tuşları yönetin." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                </StackPanel>
+
+                <!-- Search & Category Filters -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,14,0">
+                    <TextBox x:Name="SearchBox" Width="180" Padding="8,6" TextChanged="SearchBox_TextChanged" Margin="0,0,8,0" />
+                    <ComboBox x:Name="CategoryFilterCombo" Width="140" SelectionChanged="CategoryFilterCombo_SelectionChanged" />
+                </StackPanel>
+
+                <!-- Add Button -->
+                <Button Grid.Column="2" Content="➕ Yeni Tuş Ekle" Style="{StaticResource PrimaryButton}" Click="AddKey_Click" Padding="16,10" />
+            </Grid>
+
+            <!-- Main Content List or Empty State -->
+            <Grid Grid.Row="2">
+                <!-- Empty State -->
+                <Border x:Name="EmptyStateBorder" Style="{StaticResource CardPanel}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="40" Visibility="Collapsed">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="🕹️" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,12" />
+                        <TextBlock Text="Tanımlı Tuş Yok" FontSize="18" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,0,0,8" />
+                        <TextBlock Text="Simülasyon veya oyunlarınız için ilk sanal butonunuzu ekleyin." FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,12" />
+                        <Button Content="➕ İlk Tuşu Ekle" Style="{StaticResource PrimaryButton}" Click="AddKey_Click" HorizontalAlignment="Center" Padding="16,10" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Keys List -->
+                <ListBox x:Name="KeysListBox" Background="Transparent" BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0,0,0,10" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{StaticResource BgCardBrush}" BorderBrush="{Binding CardBorderBrush}" BorderThickness="1.5" CornerRadius="12" Padding="14">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="14" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Icon Box -->
+                                    <Border Width="48" Height="48" Background="#111624" BorderBrush="{Binding CardBorderBrush}" BorderThickness="1" CornerRadius="10">
+                                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding PresetIcon}" FontSize="24" Visibility="{Binding PresetIconVisibility}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <Image Source="{Binding CustomIcon}" Width="36" Height="36" Stretch="Uniform" Visibility="{Binding CustomIconVisibility}" RenderOptions.BitmapScalingMode="HighQuality" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Key Info -->
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{Binding Title}" FontSize="15" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,8,0" />
+                                            
+                                            <!-- Key Sequence Badge -->
+                                            <Border Background="#0D111A" BorderBrush="{Binding CardBorderBrush}" BorderThickness="1" CornerRadius="5" Padding="6,2" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding KeyBadge}" FontSize="11" FontWeight="Bold" Foreground="{Binding CardBorderBrush}" />
+                                            </Border>
+
+                                            <!-- Category -->
+                                            <Border Background="#222B42" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding GameOrCategory}" FontSize="11" Foreground="#93C5FD" FontWeight="SemiBold" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding StatsText}" FontSize="11" Foreground="#10B981" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Action Buttons -->
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="⚡ Test Et" Style="{StaticResource SuccessButton}" Click="TestKey_Click" Tag="{Binding Id}" ToolTip="PC'de bu tuşa bas" Margin="0,0,8,0" />
+                                        <Button Content="✏ Düzenle" Style="{StaticResource ModernButton}" Click="EditKey_Click" Tag="{Binding Id}" Margin="0,0,8,0" />
+                                        <Button Content="🗑 Sil" Style="{StaticResource DangerButton}" Click="DeleteKey_Click" Tag="{Binding Id}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

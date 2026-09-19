@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PCLauncher.App/PCLauncher.App.csproj" />
+  <Project Path="PCLauncher.Core/PCLauncher.Core.csproj" />
+  <Project Path="PCLauncher.Server/PCLauncher.Server.csproj" />
+  <Project Path="PCLauncher.Tests/PCLauncher.Tests.csproj" />
+</Solution>
